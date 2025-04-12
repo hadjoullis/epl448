@@ -898,6 +898,7 @@ bmw,335i xdrive
 bmw,335xi
 bmw,340i
 bmw,3 series
+bmw,3 series (e36)
 bmw,3 series gran turismo
 bmw,420d
 bmw,420i
@@ -934,6 +935,7 @@ bmw,528i xdrive
 bmw,528xi
 bmw,530
 bmw,530i
+bmw,530xd
 bmw,530xi
 bmw,535d
 bmw,535d xdrive
@@ -992,6 +994,9 @@ bmw,alpina b7
 bmw,alpina b7l
 bmw,alpina b7l xdrive
 bmw,alpina b7 xdrive
+bmw,e36
+bmw,e46
+bmw,e90
 bmw,c600 sport
 bmw,c650gt
 bmw,f650cs
@@ -1378,6 +1383,56 @@ cannondale,mx400
 cannondale,s440
 cannondale,speed 440
 cannondale,x440
+citroen,c3
+citroen,e-c3
+citroen,c3 aircross
+citroen,c4
+citroen,e-c4
+citroen,c4 x
+citroen,e-c4 x
+citroen,c5 x
+citroen,c5 aircross
+citroen,e-c5 aircross
+citroen,basalt
+citroen,e-berlingo
+citroen,e-spacetourer
+citroen,ami
+citroen,2cv
+citroen,acadiane
+citroen,ami
+citroen,ax
+citroen,bx
+citroen,c1
+citroen,c2
+citroen,c3 pluriel
+citroen,c3 picasso
+citroen,c4 cactus
+citroen,c4 picasso
+citroen,c5
+citroen,c6
+citroen,c8
+citroen,cx
+citroen,ds
+citroen,dyane
+citroen,e-mehari
+citroen,evasion
+citroen,gs
+citroen,gsa
+citroen,ln
+citroen,lna
+citroen,mehari
+citroen,nemo
+citroen,rosalie
+citroen,saxo
+citroen,sm
+citroen,synergie
+citroen,traction avant
+citroen,visa
+citroen,xantia
+citroen,xm
+citroen,xsara
+citroen,xsara picasso
+citroen,zx
 chance coach transit bus,ah-28
 chance coach transit bus,cng-28
 chevrolet,1500 extended cab
@@ -1936,11 +1991,13 @@ fiat,500e
 fiat,500l
 fiat,500x
 fiat,albea
+fiat,cinquecento
 fiat,ducato
 fiat,grande punto
 fiat,palio
 fiat,panda
 fiat,stilo
+fiat,scudo
 fisker,alaska
 fisker,karma
 fisker,ocean
@@ -2059,6 +2116,8 @@ ford,fusion
 ford,fusion energi
 ford,fusion hybrid
 ford,fusion plug-in hybrid
+ford,galaxy
+ford,galaxie
 ford,grand marquis
 ford,gt
 ford,ikon
@@ -2722,6 +2781,7 @@ honda,xr650l
 honda,xr650r
 honda,xr70r
 honda,xr80r
+honda,jazz
 hummer,h1
 hummer,h2
 hummer,h3
@@ -2810,6 +2870,8 @@ hyosung,st7
 hyosung,st7 deluxe
 hyosung,te450s
 hyundai,accent
+hyundai,atos
+hyundai,atoz
 hyundai,azera
 hyundai,elantra
 hyundai,elantra coupe
@@ -2821,6 +2883,7 @@ hyundai,equus
 hyundai,excel
 hyundai,genesis
 hyundai,genesis coupe
+hyundai,getz
 hyundai,hmd 230
 hyundai,hmd 260
 hyundai,ioniq 5
@@ -3715,6 +3778,7 @@ mclaren,mp4-12c
 mclaren,p1
 mclaren,senna
 mercedes-benz,190 e
+mercedes-benz,190 d
 mercedes-benz,300 ce
 mercedes-benz,300 d
 mercedes-benz,300 e
@@ -3952,6 +4016,7 @@ mercedes-benz,sprinter worker passenger
 mercedes-benz,vito
 mercedes-benz,w110
 mercedes-benz,w121
+mercedes-benz,w123
 mercedes-benz,w201
 mercury,capri
 mercury,cougar
@@ -3983,6 +4048,8 @@ mini,hardtop 4 door
 mini,paceman
 mini,roadster
 mitsubishi,3000gt
+mitsubishi,carisma
+mitsubishi,colt
 mitsubishi,diamante
 mitsubishi,eclipse
 mitsubishi,eclipse cross
@@ -4166,6 +4233,7 @@ nissan,pathfinder
 nissan,pathfinder armada
 nissan,pickup
 nissan,platina
+nissan,primera
 nissan,quest
 nissan,regular cab
 nissan,rogue
@@ -4227,6 +4295,7 @@ opel,frontera
 opel,grandland
 opel,mokka
 opel,combo life
+opel,zafira
 opel,zafira life
 opel,combo
 opel,vivaro
@@ -4292,6 +4361,9 @@ peterbilt,567
 peterbilt,579
 peterbilt,587
 peugeot,2008
+peugeot,106
+peugeot,107
+peugeot,206
 peugeot,206
 peugeot,207
 peugeot,208
@@ -4834,6 +4906,7 @@ ram,promaster window van
 ram,ram
 ram,ram pickup
 renault,clio
+renault,twingo
 renault,duster
 renault,euro clio
 renault,fluence
@@ -5324,7 +5397,42 @@ ski-doo,tundra lt ace 600
 ski-doo,tundra r
 ski-doo,tundra sport 550f
 ski-doo,tundra sport ace 600
+skoda,enyaq iv
+skoda,enyaq coupe iv
+skoda,elroq
+skoda,superb iv
+skoda,kodiaq iv
+skoda,fabia
+skoda,scala
+skoda,octavia
+skoda,superb
+skoda,slavia
+skoda,kamiq
+skoda,karoq
+skoda,kodiaq
+skoda,kushaq
+skoda,kylaq
+skoda,popular
+skoda,rapid (1930s-1940s)
+skoda,superb (original)
+skoda,1101
+skoda,1102
+skoda,felicia (1959)
+skoda,1000 mb
+skoda,105
+skoda,120
+skoda,125
+skoda,130
+skoda,135
+skoda,136
+skoda,favorit
+skoda,felicia (1994)
+skoda,roomster
+skoda,yeti
+skoda,citigo
+skoda,rapid (2012-2023)
 smart,cabrio
+smart,coupe
 smart,city-coupe
 smart,eq fortwo
 smart,forfour
@@ -5630,6 +5738,23 @@ toyota,xtra cab
 toyota,yaris
 toyota,yaris hatchback
 toyota,yaris ia
+trabant,p50
+trabant,p60
+trabant,601
+trabant,1.1
+trabant,limousine
+trabant,universal
+trabant,kübelwagen
+trabant,tramp
+trabant,pickup
+trabant,fourgonette
+trabant,p50 coupé
+trabant,p50 pickup
+trabant,p602v
+trabant,p603
+trabant,p610
+trabant,p601z
+trabant,nt
 triumph,adventurer
 triumph,america
 triumph,america classic
