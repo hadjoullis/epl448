@@ -1671,11 +1671,105 @@ cub cadet,big country 4x2
 cub cadet,volunteer 4x2
 cub cadet,volunteer 4x4d
 cub cadet,volunteer 4x4 efi
+dacia,spring
+dacia,sandero
+dacia,sandero stepway
+dacia,logan
+dacia,duster
+dacia,bigster
+dacia,jogger
+dacia,1100
+dacia,1300
+dacia,1301
+dacia,1302
+dacia,1304
+dacia,1305
+dacia,1307
+dacia,1309
+dacia,1310
+dacia,1320
+dacia,1325
+dacia,1410
+dacia,2000
+dacia,d6
+dacia,duster
+dacia,500
+dacia,nova
+dacia,supernova
+dacia,solenza
+dacia,logan mcv
+dacia,logan van
+dacia,logan pick-up
+dacia,dokker
+dacia,lodgy
 daewoo,lanos
 daewoo,leganza
 daewoo,nubira
+daihatsu,altis
+daihatsu,applause
+daihatsu,arai
+daihatsu,arai 7
+daihatsu,ayla
+daihatsu,be-go
+daihatsu,be‣go
+daihatsu,bego
+daihatsu,bee
+daihatsu,boon
+daihatsu,boon luminas
+daihatsu,cast
+daihatsu,ceria
 daihatsu,charade
+daihatsu,charade centro
+daihatsu,charmant
+daihatsu,citivan
+daihatsu,compagno
+daihatsu,consorte
+daihatsu,coo
+daihatsu,copen
+daihatsu,cuore
+daihatsu,delta
+daihatsu,domino
+daihatsu,esse
+daihatsu,extol
+daihatsu,fellow
+daihatsu,fellow max
+daihatsu,feroza
+daihatsu,gran max
+daihatsu,gran move
+daihatsu,hijet
+daihatsu,leeza
+daihatsu,leeza spider
+daihatsu,luxio
+daihatsu,max
+daihatsu,mater
+daihatsu,mebius
+daihatsu,midget
+daihatsu,midget ii
+daihatsu,mira
+daihatsu,mira cocoa
+daihatsu,mira gino
+daihatsu,mira tocot
+daihatsu,move
+daihatsu,move canbus
+daihatsu,move conte
+daihatsu,move latte
+daihatsu,naked
+daihatsu,opti
+daihatsu,pyzar
 daihatsu,rocky
+daihatsu,rugger
+daihatsu,sigra
+daihatsu,sirion
+daihatsu,sonica
+daihatsu,storia
+daihatsu,taft
+daihatsu,tanto
+daihatsu,terios
+daihatsu,thor
+daihatsu,wake
+daihatsu,xenia
+daihatsu,yrv
+daihatsu,zebra
 dodge,atos
 dodge,attitude
 dodge,avenger
@@ -1991,7 +2085,10 @@ fiat,500e
 fiat,500l
 fiat,500x
 fiat,albea
+fiat,brachetta
+fiat,bravo
 fiat,cinquecento
+fiat,doblo
 fiat,ducato
 fiat,grande punto
 fiat,palio
@@ -3380,6 +3477,7 @@ kia,optima
 kia,optima (2006.5)
 kia,optima hybrid
 kia,optima plug-in hybrid
+kia,picanto
 kia,rio
 kia,rio5
 kia,rondo
@@ -3571,6 +3669,24 @@ kymco,xciting 500ri abs
 kymco,yup 50
 kymco,zx 50
 laforza,laforza
+lada,granta
+lada,vesta
+lada,aura
+lada,iskra
+lada,niva legend
+lada,niva travel
+lada,largus
+lada,2101
+lada,2102
+lada,2103
+lada,2104
+lada,2105
+lada,2106
+lada,2107
+lada,samara
+lada,kalina
+lada,priora
+lada,xray
 lamborghini,aventador
 lamborghini,diablo
 lamborghini,gallardo
@@ -4376,6 +4492,7 @@ peugeot,406
 peugeot,407
 peugeot,508
 peugeot,607
+peugeot,cabrio
 peugeot,expert
 peugeot,grand raid
 peugeot,partner
@@ -4857,6 +4974,7 @@ porsche,718 spyder
 porsche,911
 porsche,918 spyder
 porsche,928
+porsche,944
 porsche,968
 porsche,boxster
 porsche,carrera gt
