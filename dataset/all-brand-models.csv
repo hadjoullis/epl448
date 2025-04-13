@@ -994,6 +994,7 @@ bmw,alpina b7
 bmw,alpina b7l
 bmw,alpina b7l xdrive
 bmw,alpina b7 xdrive
+bmw,e21
 bmw,e36
 bmw,e46
 bmw,e90
@@ -2105,6 +2106,7 @@ ford,aerostar passenger
 ford,aspire
 ford,bronco
 ford,bronco sport
+ford,capri
 ford,club wagon
 ford,c-max
 ford,c-max energi
@@ -4492,6 +4494,7 @@ peugeot,406
 peugeot,407
 peugeot,508
 peugeot,607
+peugeot,807
 peugeot,cabrio
 peugeot,expert
 peugeot,grand raid
@@ -4973,6 +4976,7 @@ porsche,718 cayman
 porsche,718 spyder
 porsche,911
 porsche,918 spyder
+porsche,924
 porsche,928
 porsche,944
 porsche,968
@@ -5816,6 +5820,7 @@ toyota,hiace
 toyota,highlander
 toyota,highlander hybrid
 toyota,hilux
+toyota,verso
 toyota,land cruiser
 toyota,matrix
 toyota,mirai
@@ -5858,6 +5863,7 @@ toyota,yaris hatchback
 toyota,yaris ia
 trabant,p50
 trabant,p60
+trabant,600
 trabant,601
 trabant,1.1
 trabant,limousine
@@ -6066,6 +6072,7 @@ volkswagen,tiguan
 volkswagen,tiguan limited
 volkswagen,touareg
 volkswagen,touareg 2
+volkswagen,touran
 volkswagen,transporter
 volkswagen,van
 volvo,240
