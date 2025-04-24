@@ -1,0 +1,328 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\title{EPL448 Data Mining Project: Predicting Prices for Used Cars}
+\author{Andreas Hadjoullis\\Julios Fotiou}
+\institute{Department of Computer Science \\ University of Cyprus}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+\section{Introduction}
+\begin{frame}{Introduction}
+    \begin{itemize}
+        \item The used car market is huge and rapidly changing. Pricing a used car correctly is crucial for both sellers and buyers.
+        \item \textbf{Problem:} Accurately predict the selling price of a used car based on its features (brand, model, year, gearbox, etc.).
+        \item \textbf{Objectives:}
+            \begin{itemize}
+                \item Explore and analyze the dataset.
+                \item Engineer features and preprocess data.
+                \item Build and evaluate predictive models.
+            \end{itemize}
+        \item \textbf{Challenges:} Presence of outliers, irrelevant features, and highly skewed price distribution.
+    \end{itemize}
+\end{frame}
+
+% Initial Data Exploration
+\section{Initial Data Exploration}
+\begin{frame}{Initial Data Exploration}
+    \begin{itemize}
+        \item Kept only rows with realistic prices (1,000–200,000) for effective modeling.
+        \item \texttt{offerType} and \texttt{seller} each had two categories, but one category dominated almost entirely (the minority category had only a handful of rows).
+        \item \texttt{nrOfPictures} had only a single unique value for all entries.
+        \item These columns were removed as they provided no useful information for prediction.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Handling Missing Models Values}
+    \begin{itemize}
+        \item The \texttt{model} column contained many missing values, making it unreliable for use directly.
+        \item The \texttt{name} column, though messy and user-entered, always existed and typically included the brand, model, and extra info.
+        \item \textbf{Solution:} We extracted the car model from the \texttt{name} field using the following steps:
+        \begin{itemize}
+            \item Collected a comprehensive list of car brands and their possible models from the web.
+            \item Cleaned and tokenized the name, then generated all 1–3 word n-grams.
+           \item Matched these n-grams against known models for that brand using fuzzy matching.
+            \item If a strong match was found (above a similarity threshold), we filled in the missing \texttt{model}.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Results of Model Extraction}
+    \begin{itemize}
+        \item \textbf{Before extraction:} 12,148 missing values in the \texttt{model} column.
+        \item Using n-gram and fuzzy matching based on the car brand and name, we reduced this to 4,114 missing values.
+        \item \textbf{Limitations:}
+        \begin{itemize}
+            \item 2,857 entries could not be filled because the brand was \texttt{sonstige\_autos} (“other cars”).
+            \item 1,257 entries had insufficient information in the \texttt{name} field.
+        \end{itemize}
+        \item \textbf{Final step:} To ensure data quality, we dropped all rows where the \texttt{model} value remained missing.
+        \item This resulted in a clean and consistent dataset for further analysis and modeling.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Target Variable Analysis}
+    \begin{itemize}
+        \item The primary target is the car's selling \texttt{price}.
+        \item \textbf{Distribution:} Price distribution is highly right-skewed, with many extreme outliers.
+        \item \textbf{Normality tests:} All tests (Anderson-Darling, Kolmogorov-Smirnov, D’Agostino-Pearson, Jarque-Bera, Lilliefors) indicate that \texttt{price} does \textbf{not} follow a normal distribution.
+        \item \textbf{Skewness:} 5.14 (very high, confirms extreme right skew).
+        \item \textbf{Implications:}
+            \begin{itemize}
+                \item Model will perform best on low/average prices, but may struggle with high-price cars due to data imbalance.
+                \item Considered unskewing techniques such as Box-Cox and Yeo-Johnson.
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Categorical Features Analysis}
+    \begin{itemize}
+        \item Explored distributions of key categorical variables using bar plots and boxplots.
+        \item \textbf{ABtest (\texttt{abtest}):} Both categories ("test" and "control") are similarly distributed, but show no influence on price.
+        \item \textbf{Vehicle Type (\texttt{vehicleType}):} Distribution is dominated by a few types (kleinwagen, limousine, kombi), which strongly influence price.
+        \item \textbf{Gearbox (\texttt{gearbox}):} Majority are manual, but automatic is also significant. Gearbox type shows high correlation with price.
+        \item \textbf{Month of Registration (\texttt{monthOfRegistration}):} Mostly balanced, except for "0" (likely missing values).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Categorical Features Analysis}
+    \begin{itemize}
+        \item \textbf{Fuel Type (\texttt{fuelType}):} Benzin dominates, diesel also frequent. Rare types (lpg, andere, cng) can be grouped as "other", but "hybrid" and "elektro" show distinct price patterns.
+        \item \textbf{Not Repaired Damage (\texttt{notRepairedDamage}):} "Nein" dominates, but "ja" shows much lower prices, indicating a strong correlation with the target.
+        \item \textbf{Model \& Brand:} Both have high correlation with price and large within-category deviations, especially for brands with many models (e.g., Porsche 911 vs Cayenne).
+        \item \textbf{General observations:}
+            \begin{itemize}
+                \item Many categorical features are unbalanced; stratified sampling may be needed for fair modeling.
+                \item Outliers are present in every category.
+                \item Grouping or discarding rare categories considered to improve model stability.
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Numerical Features Analysis for All Values}
+    \begin{itemize}
+        \item Initial analysis revealed extreme skewness and non-normality in several numerical features:
+        \begin{itemize}
+            \item \texttt{yearOfRegistration}: Skewness 106.79
+            \item \texttt{powerPS}: Skewness 61.90 
+            \item \texttt{kilometer}: Skewness -1.33
+            \item \texttt{postalCode}: Skewness $\approx$ 0.02, no strong skew
+        \end{itemize}
+        \item \textbf{Normality tests:} All tests (Anderson-Darling, Kolmogorov-Smirnov, etc.) strongly rejected the hypothesis of normal distribution for all features.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Numerical Features Analysis for Valid Values}
+    \begin{itemize}
+        \item After our initial analysis, we carefully checked each feature for valid value ranges:
+        \begin{itemize}
+            \item For \texttt{yearOfRegistration}, we kept only values from 1920 to 2016, since \texttt{DateCreated} was never after 2016 and earlier years were invalid.
+            \item For \texttt{powerPS}, we kept only values less than or equal to 1500, as it is not realistic for a car under 200,000€ to have more power.
+            \item For \texttt{kilometer} and \texttt{postalCode}, we confirmed all values were within realistic ranges.
+        \end{itemize}
+        \item This cleaning significantly reduced skewness:
+        \begin{itemize}
+            \item \texttt{yearOfRegistration}: -1.65
+            \item \texttt{powerPS}: 2.79
+            \item \texttt{kilometer}: -1.27
+            \item \texttt{postalCode}: $\approx$ 0
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Correlation Analysis}
+    \begin{itemize}
+        \item \textbf{kilometer} and \textbf{price} have a moderate negative correlation: cars with more kilometers tend to be less expensive.
+        \item \textbf{powerPS} and \textbf{price} have a moderate positive correlation: higher power typically means a higher price.
+        \item \textbf{yearOfRegistration} and \textbf{price} have a moderate positive correlation: newer cars are generally more expensive.
+        \item \textbf{yearOfRegistration} is negatively correlated with \textbf{kilometer}: newer cars generally have lower mileage.
+        \item \textbf{postalCode} shows little or no correlation with price, indicating it may not be a useful predictor.
+        \item These correlations align with expectations and support feature selection for modeling.
+    \end{itemize}
+\end{frame}
+
+% Splitting Data
+\section{Data Splitting}
+\begin{frame}{Data Cleaning}
+    \begin{itemize}
+        \item \textbf{Set invalid values to missing:}
+        \begin{itemize}
+            \item \texttt{yearOfRegistration}: Years $<$ 1920 and $>$ 2016 are not realistic for used cars in our dataset. Setting these to NaN ensures we only use plausible registration years for modeling.
+            \item \texttt{powerPS}: Values below 4.5 or above 1500 are outside the range for real vehicles (especially considering our price limits). Marking these as missing, removes obvious errors and extreme outliers.
+            \item \texttt{monthOfRegistration}: A value of 0 is not a valid month and likely indicates missing or unknown data, so we treat it as NaN.
+        \end{itemize}
+        \item \textbf{Grouped rare \texttt{fuelType} categories:}
+        \begin{itemize}
+            \item Categories like "lpg" and "cng" had very few entries, making it hard for the model to learn about them.
+            \item We combined these into "andere" ("other") to improve statistical reliability.
+            \item "hybrid" and "elektro" were kept separate despite being rare, as they showed distinct price patterns and might be important for predictions.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Feature Engineering: Age Columns}
+    \begin{itemize}
+        \item Added two new features:
+        \begin{itemize}
+            \item \texttt{adLifespan}: Time (in days) between when an ad was first seen and last seen.
+            \item \texttt{carAge}: Age of the car in days at the time the ad was created.
+        \end{itemize}
+        \item Replaced date columns with these new features for modeling convenience.
+        \item Checked and corrected for negative or zero values in \texttt{carAge}.
+        \item Dropped columns: \texttt{registrationDate}, \texttt{dateCrawled}, \texttt{dateCreated}, \texttt{lastSeen}.
+        \item \texttt{adLifespan} remained slightly right-skewed (skewness: 0.96) and did not follow a normal distribution.
+        \item \texttt{carAge} and \texttt{yearOfRegistration} had a perfect negative correlation ($r = -1.00$), so we dropped \texttt{yearOfRegistration}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Train/Test Split and Handling Imbalance}
+    \begin{itemize}
+        \item Split the dataset into train and test sets (80/20 split).
+        \item Rare categories in \texttt{fuelType} ("hybrid" and "elektro") were oversampled in the training set (20x) to address class imbalance and ensure the model learns from these cases.
+        \item After oversampling, shuffled the training set to mix synthetic and real rows.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Scaling and Target Transformation}
+    \begin{itemize}
+        \item Applied robust scaling to numerical features: \texttt{carAge}, \texttt{powerPS}, \texttt{kilometer}, \texttt{adLifespan}.
+        \item Checked post-scaling standard deviation to confirm effective normalization.
+        \item Transformed the target variable (\texttt{price}) using Box-Cox, as all values were positive, to reduce skewness and improve model performance.
+    \end{itemize}
+\end{frame}
+
+\section{Feature Selection}
+\begin{frame}{Feature Selection and Dataset Versions}
+    \begin{itemize}
+        \item \textbf{Feature Selection:}
+        \begin{itemize}
+            \item Used Sequential Forward Selection with XGBoost on the training data to select the most predictive features.
+            \item Best feature set included: vehicleType, gearbox, powerPS, model, kilometer, fuelType, brand, notRepairedDamage, adLifespan, carAge.
+            \item Features \texttt{postalCode} and \texttt{monthOfRegistration} were not selected, confirming their low predictive value.
+        \end{itemize}
+        \item \textbf{Created multiple dataset versions (V1–V8)} with different combinations of:
+        \begin{itemize}
+            \item Imputation strategies (mean, most frequent, iterative).
+            \item Encoding methods (label, one-hot).
+            \item Skewness correction (Box-Cox, Yeo-Johnson).
+            \item Scaling (RobustScaler, MinMax).
+            \item Feature sets (all, selected).
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Model Training and Evaluation}
+\begin{frame}{Model Training and Evaluation}
+    \begin{itemize}
+        \item Trained and compared six regression models (Random Forest, AdaBoost, XGBoost, CatBoost, KNN, Decision Tree) using 10-fold cross-validation.
+        \item Compared each model across all dataset and target versions (original and unskewed).
+        \item Top-performing algorithms: CatBoost and RandomForest (highest mean $R^2$ scores).
+        \item Sequential feature selection and preprocessing significantly improved performance compared to baseline.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Hyperparameter Tuning and Final Results}
+    \begin{itemize}
+        \item Performed grid search for hyperparameter optimization on best pipelines (RandomForest and CatBoost).
+        \item Best RandomForest: $R^2$ score = 0.835 (test), 0.976 (train) on V8 (unskewed).
+        \item Best CatBoost: $R^2$ score = 0.853 (test), 0.876 (train) on V8 (unskewed).
+        \item Both models showed strong generalization; no significant overfitting observed.
+        \item CatBoost slightly outperformed RandomForest on the test set.
+    \end{itemize}
+\end{frame}
+
+\section{Classification Problem: Predicting Price Categories}
+\begin{frame}
+    \centering
+    \Huge
+    Turning Price Prediction Into a Classification Problem
+\end{frame}
+
+
+\begin{frame}{From Regression to Classification}
+    \begin{itemize}
+        \item In addition to regression, we transformed the problem into classification by categorizing car prices.
+        \item Used \texttt{pd.cut} to bin the continuous price into four categories:
+        \begin{itemize}
+            \item low (\textless 5,000~€)
+            \item low average (5,000–10,000~€)
+            \item middle average (10,000–50,000~€)
+            \item high (\textgreater 50,000~€)
+        \end{itemize}
+        \item This allows us to analyze model performance for distinct price segments and understand price ranges better.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Data Preparation for Classification}
+    \begin{itemize}
+        \item Dropped the original price column, used the new price category as target.
+        \item Performed an 80/20 train-test split before scaling or encoding to avoid data leakage.
+        \item Oversampled rare fuel types ("hybrid" and "elektro") in the training set (20$\times$) to improve learning for underrepresented categories.
+        \item Created new dataset versions (V9, V10) using:
+        \begin{itemize}
+            \item Feature selection (from regression task)
+            \item Imputation for missing values
+            \item One-hot encoding and dimensionality reduction (LDA) for categorical features
+            \item Scaling and unskewing for numerical features
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Classification Models and Evaluation}
+    \begin{itemize}
+        \item Evaluated several classifiers with cross-validation:
+        \begin{itemize}
+            \item RandomForest, XGBoost, CatBoost, DecisionTree, AdaBoost, KNeighbors, Logistic Regression, GaussianNB
+        \end{itemize}
+        \item Used weighted F1-score as the main metric due to class imbalance.
+        \item Hyperparameter tuning performed for the best pipelines (RandomForest, XGBoost) with GridSearchCV.
+        \item Feature engineering (V9, V10) combined selected features, LDA, and unskewed numerical values.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Classification Results}
+    \begin{itemize}
+        \item \textbf{Best overall performance:}
+        \begin{itemize}
+            \item XGBoostClassifier: F1-score (test) = 0.875
+            \item RandomForestClassifier: F1-score (test) = 0.874
+        \end{itemize}
+        \item Other strong models: CatBoost, DecisionTree.
+        \item Extensive preprocessing and oversampling were critical for achieving balanced accuracy across all price categories.
+        \item Both best models showed good generalization, with only mild overfitting.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Key Takeaways: Classification Task}
+    \begin{itemize}
+        \item Transforming price prediction to classification allowed us to focus on distinct market segments.
+        \item Proper binning, feature selection, dimensionality reduction, and robust preprocessing are essential for strong performance.
+        \item RandomForest and XGBoost achieved the highest F1-scores, showing strong capability for price category prediction.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \centering
+    \Huge
+    Thank you! \\
+    Questions?
+\end{frame}
+
+\end{document}
+
