@@ -6,9 +6,16 @@
 \usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{booktabs}
+\usepackage{float}      % for [H] float placement
+\usepackage{placeins}
 \usepackage{cite}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    }
 
-\title{Predicting prices for used cars}
+\title{Predicting Prices for Used Cars}
 \author{
     \IEEEauthorblockN{Julios Fotiou}
     \IEEEauthorblockN{Andreas Hadjoullis}
@@ -22,14 +29,90 @@
 
 \maketitle
 
-\section{Introduction}
-Introduce the project context and motivation. What problem are you addressing and why is it important?
-
 \section{Goals}
-Describe your specific objectives. What do you aim to accomplish with this project?
+The automotive market has a wide range of car prices depending on factors such
+as brand, age, mileage, and vehicle type. Predicting car prices accurately is
+valuable for both buyers and sellers. This project aims to build a predictive
+model using structured automotive data.
+
+Our dataset is derived from
+\href{https://www.kaggle.com/datasets/thedevastator/uncovering-factors-that-affect-used-car-prices/data}{Kaggle}
+in which we have a comprehensive collection of valuable data about used cars,
+and provides insight into how the cars are being sold, what price they are
+being sold for, and all the details about their condition.
+
+This project focuses on predicting car prices using machine learning models
+trained on our real-world dataset. To improve prediction quality, extreme
+values outside the practical range [1,000 – 200,000] are excluded. Various
+regression models are evaluated using standardized preprocessing and feature
+selection pipelines. We have also tested various classification algorithms on
+our dataset, after splitting our dataset into bins, decided by their price.
+
+The main goals of the project are:
+\begin{itemize}
+    \item Understand our dataset.
+    \item Clean and preprocess raw car listing data.
+    \item Select relevant features and remove noise.
+    \item Train and compare multiple regression and classification models.
+    \item Evaluate model performance using robust statistical metrics.
+\end{itemize}
 
 \section{Approach}
-Detail your methodology and techniques. Include any theoretical background, algorithms, tools or frameworks used.
+\subsection{Exploratory Data Analysis (EDA)}
+First of all we need to understand our dataset. Before doing that however, we
+get rid of all rows/instances in which the price does not belong in the range
+of [1,000 – 200,000]. Our rezoning behind this choice, is that we only find our
+model practical for values that lie in said range, and all other rows would
+make it harder for the models to predict accurately prices in our desired
+target range. After removing said rows, we end up with 288,023 rows instead of
+the original 371,528.
+
+We start by checking for features that have little to no deviation. For example
+'offerType' only has two unique values, and one of them appears four times.
+Meaning this feature has no impact on the target of our dataset. The same
+applies for 'seller' and 'nrOfPictures'. So we remove the aforementioned
+features after also removing the insignificantly few rows that had a different
+value. We are now only working with 17 features/columns.
+
+Some features, such as, 'vehicleType', 'gearbox', 'model', 'fuelType' and
+'notRepairedDamage', have a significant number of missing values into the tens
+of thousands.
+
+\subsubsection{Car Name}
+
+\begin{table}[H]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+name & model & brand \\
+\midrule
+Golf\_3\_1.6 & golf & volkswagen \\
+A5\_Sportback\_2.7\_Tdi & NaN & audi \\
+Jeep\_Grand\_Cherokee\_"Overland" & grand & jeep \\
+GOLF\_4\_1\_4\_\_3TÜRER & golf & volkswagen \\
+Skoda\_Fabia\_1.4\_TDI\_PD\_Classic & fabia & skoda \\
+BMW\_316i\_\_\_e36\_Limousine\_\_\_Bastlerfahrzeug\_\_Export & 3er & bmw \\
+Peugeot\_206\_CC\_110\_Platinum & 2\_reihe & peugeot \\
+VW\_Derby\_Bj\_80\_\_Scheunenfund & andere & volkswagen \\
+Ford\_C\_\_\_Max\_Titanium\_1\_0\_L\_EcoBoost & c\_max & ford \\
+VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswagen \\
+\bottomrule
+\end{tabular}
+}
+\caption{Sample of car name, model, and brand from dataset}
+\label{tab:car_name}
+\end{table}
+
+Our first difficulty comes when dealing with the feature 'name'. As shown from
+the Table~\ref{tab:car_name}, each value is distinct and does not follow any
+specific convention. This is important since 'model' can be derived from 'name'
+and model has 12,148 missing values. We manage to derive the model of the cars
+from their name by applying fuzzy match of the name into known models of the
+corresponding brand. This is important since the price of a car within the same
+brand can vary largely due to the specific model, as shown here 
+
+
 
 \section{Milestones}
 Break down the key stages or checkpoints in your project timeline. For example:
