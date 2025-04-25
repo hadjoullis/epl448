@@ -547,24 +547,24 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
 
 \section{Model Training and Evaluation}
 \begin{frame}{Model Training and Evaluation}
+    \begin{itemize}
+        \item Trained and compared six regression models (Random Forest, AdaBoost, XGBoost, CatBoost, KNN, Decision Tree) using 10-fold cross-validation.
+        \item Compared each model across all dataset and target versions (original and unskewed).
+        \item \textbf{Top-performing algorithms:}
         \begin{itemize}
-                \item Trained and compared six regression models (Random
-                        Forest, AdaBoost, XGBoost, CatBoost, KNN, Decision
-                        Tree) using 10-fold cross-validation.
-                \item Compared each model across all dataset and target
-                        versions (original and unskewed).
-                \item Top-performing algorithms: CatBoost and RandomForest
-                        (highest mean $R^2$ scores).
-                \item Sequential feature selection and preprocessing
-                        significantly improved performance compared to
-                        baseline.
+            \item CatBoost (\textbf{original target}): $R^2 = 0.856$
+            \item RandomForest (\textbf{unskewed target}): $R^2 = 0.853$
         \end{itemize}
+        \item \textbf{Best dataset versions:}
+        \begin{itemize}
+            \item V7 (unskewed target): $R^2 = 0.777$
+            \item V8 (unskewed target): $R^2 = 0.776$
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Best Dataset Versions: V7 and V8}
+\begin{frame}{Best Dataset Versions}
         \begin{itemize}
-                \item \textbf{V7 and V8 emerged as the best-performing dataset
-                        versions in our experiments.}
                 \item \textbf{Version V7:}
                         \begin{itemize}
                                 \item Used the optimal feature subset selected
@@ -586,25 +586,20 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                                         \texttt{carAge}, \texttt{powerPS},
                                         \texttt{adLifespan}.
                         \end{itemize}
-                \item Both versions enabled our top-performing models to
-                        achieve the highest accuracy and generalization in
-                        price prediction.
         \end{itemize}
 \end{frame}
 
-\begin{frame}{Hyperparameter Tuning and Final Results}
+\begin{frame}{Hyperparameter Tuning}
+    \begin{itemize}
+        \item After identifying the best-performing algorithms and dataset version, we applied \textbf{GridSearchCV} to tune hyperparameters and evaluate model performance using the $R^2$ score.
+        \item \textbf{Final results:}
         \begin{itemize}
-                \item Performed grid search for hyperparameter optimization on
-                        best pipelines (RandomForest and CatBoost).
-                \item Best RandomForest: $R^2$ score = 0.835 (test), 0.976
-                        (train) on V8 (unskewed).
-                \item Best CatBoost: $R^2$ score = 0.853 (test), 0.876 (train)
-                        on V8 (unskewed).
-                \item Both models showed strong generalization; no significant
-                        overfitting observed.
-                \item CatBoost slightly outperformed RandomForest on the test
-                        set.
+            \item The best overall model was \textbf{CatBoost} on dataset \textbf{V8}, unskewed, which achieved an $R^2$ score of \textbf{0.853} on the test set and \textbf{0.876} on the training set.
+            \item The best version of \textbf{RandomForest} on dataset \textbf{V8}, unskewed, achieved an $R^2$ score of \textbf{0.835} on the test set and \textbf{0.976} on the training set.
         \end{itemize}
+        \item Both models showed strong generalization with no significant overfitting.
+        \item CatBoost slightly outperformed RandomForest in the final evaluation.
+    \end{itemize}
 \end{frame}
 
 \section{Classification Problem: Predicting Price Categories}
@@ -657,24 +652,29 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
 
 
 \begin{frame}{Classification Models and Evaluation}
+    \begin{itemize}
+        \item Evaluated several classifiers with 10-fold cross-validation:
         \begin{itemize}
-                \item Evaluated several classifiers with cross-validation:
-                        \begin{itemize}
-                                \item RandomForest, XGBoost, CatBoost,
-                                        DecisionTree, AdaBoost, KNeighbors,
-                                        Logistic Regression, GaussianNB.
-                        \end{itemize}
-                \item Used weighted F1-score as the main metric due to class
-                        imbalance.
-                \item Hyperparameter tuning performed for the best pipelines
-                        (RandomForest, XGBoost) with GridSearchCV.
+            \item RandomForest, XGBoost, CatBoost, DecisionTree, AdaBoost, KNeighbors, Logistic Regression, GaussianNB
         \end{itemize}
+        \item Used weighted F1-score as the main metric due to class imbalance.
+        \item Hyperparameter tuning performed for the best pipelines (RandomForest, XGBoost) with GridSearchCV.
+        \item \textbf{Best performing algorithms:}
+        \begin{itemize}
+            \item RandomForest: F1-score = \textbf{0.873}
+            \item XGBoost: F1-score = \textbf{0.864}
+        \end{itemize}
+        \item \textbf{Best dataset versions:}
+        \begin{itemize}
+            \item V10: F1-score = \textbf{0.817}
+            \item V8: F1-score = \textbf{0.811}
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Best Dataset Versions: V8 and V10}
+
+\begin{frame}{Best Dataset Versions}
         \begin{itemize}
-                \item \textbf{Versions V8 and V10 achieved the best model
-                        performance in our experiments.}
                 \item \textbf{Version V8:}
                         \begin{itemize}
                                 \item Used the optimal feature subset from
@@ -709,23 +709,17 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
 \end{frame}
 
 
-\begin{frame}{Classification Results}
+\begin{frame}{Hyperparameter Tuning}
+    \begin{itemize}
+        \item After identifying the best-performing classification algorithms and dataset version, we applied \textbf{GridSearchCV} to tune hyperparameters and evaluated model performance using the weighted F1-score.
+        \item \textbf{Final results:}
         \begin{itemize}
-                \item \textbf{Best overall performance:}
-                        \begin{itemize}
-                                \item XGBoostClassifier on V8: F1-score (test)
-                                        = 0.875
-                                \item RandomForestClassifier on V8: F1-score
-                                        (test) = 0.874
-                        \end{itemize}
-                \item Other strong models: CatBoost, DecisionTree.
-                \item Extensive preprocessing and oversampling were critical
-                        for achieving balanced accuracy across all price
-                        categories.
-                \item Both best models showed good generalization, with only
-                        mild overfitting.
+            \item The best overall model was \textbf{XGBoostClassifier} on dataset V8, which achieved a weighted F1-score of \textbf{0.875} on the test set and \textbf{0.928} on the training set.
+            \item The best version of \textbf{RandomForestClassifier} on dataset V8 achieved a weighted F1-score of \textbf{0.874} on the test set and \textbf{0.976} on the training set.
         \end{itemize}
+    \end{itemize}
 \end{frame}
+
 
 
 \begin{frame}{Key Takeaways: Classification Task}
