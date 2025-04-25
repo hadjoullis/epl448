@@ -204,22 +204,39 @@
 \end{frame}
 
 \section{Feature Selection}
-\begin{frame}{Feature Selection and Dataset Versions}
+\begin{frame}{Feature Selection and Dimensionality Reduction}
     \begin{itemize}
-        \item \textbf{Feature Selection:}
+        \item \textbf{Sequential Forward Selection (SFS):}
         \begin{itemize}
-            \item Used Sequential Forward Selection with XGBoost on the training data to select the most predictive features.
-            \item Best feature set included: vehicleType, gearbox, powerPS, model, kilometer, fuelType, brand, notRepairedDamage, adLifespan, carAge.
+            \item Used SFS with XGBoost to select the most predictive features.
+            \item Best feature set: vehicleType, gearbox, powerPS, model, kilometer, fuelType, brand, notRepairedDamage, adLifespan, carAge.
             \item Features \texttt{postalCode} and \texttt{monthOfRegistration} were not selected, confirming their low predictive value.
         \end{itemize}
-        \item \textbf{Created multiple dataset versions (V1–V8)} with different combinations of:
+        \item \textbf{Extra Trees Classifier:}
         \begin{itemize}
-            \item Imputation strategies (mean, most frequent, iterative).
-            \item Encoding methods (label, one-hot).
-            \item Skewness correction (Box-Cox, Yeo-Johnson).
-            \item Scaling (RobustScaler, MinMax).
-            \item Feature sets (all, selected).
+            \item Attempted to compute feature importances.
+            \item Kernel repeatedly crashed with larger \texttt{n\_estimators}, so results are unstable and not reliable for ranking.
         \end{itemize}
+        \item \textbf{Dimensionality Reduction:}
+        \begin{itemize}
+            \item \textbf{PCA} not used: only suitable for continuous numerical data, but our dataset contains many categorical variables.
+            \item \textbf{SVD} not used: most effective for large, sparse matrices, which does not apply here.
+            \item Not a limitation, as we do not have too many features.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dataset Versions and Preprocessing Strategies}
+    \begin{itemize}
+        \item Created multiple dataset versions (V1–V8) to explore the impact of different preprocessing strategies:
+        \begin{itemize}
+            \item Imputation strategies: mean, most frequent, iterative.
+            \item Encoding methods: label encoding, one-hot encoding.
+            \item Skewness correction: Box-Cox, Yeo-Johnson.
+            \item Scaling: RobustScaler, MinMaxScaler.
+            \item Compared full feature sets and subsets selected by SFS.
+        \end{itemize}
+        \item These experiments allowed us to identify the best preprocessing pipeline for optimal model performance.
     \end{itemize}
 \end{frame}
 
@@ -230,6 +247,25 @@
         \item Compared each model across all dataset and target versions (original and unskewed).
         \item Top-performing algorithms: CatBoost and RandomForest (highest mean $R^2$ scores).
         \item Sequential feature selection and preprocessing significantly improved performance compared to baseline.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Best Dataset Versions: V7 and V8}
+    \begin{itemize}
+        \item \textbf{V7 and V8 emerged as the best-performing dataset versions in our experiments.}
+        \item \textbf{Version V7:}
+        \begin{itemize}
+            \item Used the optimal feature subset selected by Sequential Forward Selection (SFS).
+            \item Applied mean imputation for numerical features and most frequent imputation for categorical features.
+            \item Encoded categorical features with label encoding.
+            \item Scaled numerical features using RobustScaler.
+        \end{itemize}
+        \item \textbf{Version V8:}
+        \begin{itemize}
+            \item Built on V7 preprocessing steps.
+            \item Additionally applied Yeo-Johnson power transformation to unskew key numerical features: \texttt{kilometer}, \texttt{carAge}, \texttt{powerPS}, \texttt{adLifespan}.
+        \end{itemize}
+        \item Both versions enabled our top-performing models to achieve the highest accuracy and generalization in price prediction.
     \end{itemize}
 \end{frame}
 
@@ -290,7 +326,27 @@
         \end{itemize}
         \item Used weighted F1-score as the main metric due to class imbalance.
         \item Hyperparameter tuning performed for the best pipelines (RandomForest, XGBoost) with GridSearchCV.
-        \item Feature engineering (V9, V10) combined selected features, LDA, and unskewed numerical values.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Best Dataset Versions: V8 and V10}
+    \begin{itemize}
+        \item \textbf{Versions V8 and V10 achieved the best model performance in our experiments.}
+        \item \textbf{Version V8:}
+        \begin{itemize}
+            \item Used the optimal feature subset from Sequential Forward Selection (SFS).
+            \item Applied mean imputation to numerical features and most frequent imputation to categorical features.
+            \item Encoded categorical features with label (ordinal) encoding.
+            \item Scaled numerical features using RobustScaler.
+            \item Applied Yeo-Johnson power transformation to unskew \texttt{kilometer}, \texttt{carAge}, \texttt{powerPS}, \texttt{adLifespan}.
+        \end{itemize}
+        \item \textbf{Version V10:}
+        \begin{itemize}
+            \item Built on V9, which used the same feature selection, imputation, and robust scaling.
+            \item Applied one-hot encoding to categorical features, followed by LDA for dimensionality reduction.
+            \item Combined numerical features with LDA components.
+            \item Also applied Yeo-Johnson power transformation to unskew key numerical features.
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -299,8 +355,8 @@
     \begin{itemize}
         \item \textbf{Best overall performance:}
         \begin{itemize}
-            \item XGBoostClassifier: F1-score (test) = 0.875
-            \item RandomForestClassifier: F1-score (test) = 0.874
+            \item XGBoostClassifier on V8: F1-score (test) = 0.875
+            \item RandomForestClassifier on V8: F1-score (test) = 0.874
         \end{itemize}
         \item Other strong models: CatBoost, DecisionTree.
         \item Extensive preprocessing and oversampling were critical for achieving balanced accuracy across all price categories.
