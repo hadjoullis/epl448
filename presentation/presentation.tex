@@ -247,7 +247,6 @@ Price boxplot
         \end{itemize}
 \end{frame}
 
-
 \begin{frame}{Numerical Features Analysis for Valid Values}
         \begin{itemize}
                 \item After our initial analysis, we carefully checked each feature for valid value ranges:
@@ -485,7 +484,6 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
         \end{itemize}
 \end{frame}
 
-
 \begin{frame}{Feature Selection and Dimensionality Reduction}
         \begin{itemize}
                 \item \textbf{Sequential Forward Selection (SFS):}
@@ -548,8 +546,11 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
 \section{Model Training and Evaluation}
 \begin{frame}{Model Training and Evaluation}
     \begin{itemize}
-        \item Trained and compared six regression models (Random Forest, AdaBoost, XGBoost, CatBoost, KNN, Decision Tree) using 10-fold cross-validation.
-        \item Compared each model across all dataset and target versions (original and unskewed).
+        \item Trained and compared six regression models (Random Forest,
+                AdaBoost, XGBoost, CatBoost, KNN, Decision Tree) using 10-fold
+                cross-validation.
+        \item Compared each model across all dataset and target versions
+                (original and unskewed).
         \item \textbf{Top-performing algorithms:}
         \begin{itemize}
             \item CatBoost (\textbf{original target}): $R^2 = 0.856$
@@ -591,14 +592,30 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
 
 \begin{frame}{Hyperparameter Tuning}
     \begin{itemize}
-        \item After identifying the best-performing algorithms and dataset version, we applied \textbf{GridSearchCV} to tune hyperparameters and evaluate model performance using the $R^2$ score.
+        \item After identifying the best-performing algorithms and dataset
+                version, we applied \textbf{GridSearchCV} to tune
+                hyperparameters and evaluate model performance using the $R^2$
+                score.
+        \item However for values \texttt{cv}~\textgreater~2 the OS killed our
+                process for using too much memory (\texttt{google collab} also
+                killed our process for taking way too long both for CPU and
+                GPU).
         \item \textbf{Final results:}
         \begin{itemize}
-            \item The best overall model was \textbf{CatBoost} on dataset \textbf{V8}, unskewed, which achieved an $R^2$ score of \textbf{0.853} on the test set and \textbf{0.876} on the training set.
-            \item The best version of \textbf{RandomForest} on dataset \textbf{V8}, unskewed, achieved an $R^2$ score of \textbf{0.835} on the test set and \textbf{0.976} on the training set.
+            \item The best overall model was \textbf{CatBoost} on dataset
+                    \textbf{V8}, unskewed, which achieved an $R^2$ score of
+                    \textbf{0.853} on the test set and \textbf{0.876} on the
+                    training set.
+            \item The best version of \textbf{RandomForest} on dataset
+                    \textbf{V8}, unskewed, achieved an $R^2$ score of
+                    \textbf{0.835} on the test set and \textbf{0.976} on the
+                    training set.
         \end{itemize}
-        \item Both models showed strong generalization with no significant overfitting.
-        \item CatBoost slightly outperformed RandomForest in the final evaluation.
+        \item CatBoost showed strong generalization with no significant
+                overfitting. However RandomForest seems to have been
+                overtrained.
+        \item CatBoost slightly outperformed RandomForest in the final
+                evaluation.
     \end{itemize}
 \end{frame}
 
@@ -609,7 +626,6 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
         Turning Price Prediction Into a Classification Problem
 \end{frame}
 
-
 \begin{frame}{From Regression to Classification}
         \begin{itemize}
                 \item In addition to regression, we transformed the problem
@@ -617,16 +633,15 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                 \item Used \texttt{pd.cut} to bin the continuous price into
                         four categories:
                         \begin{itemize}
-                                \item low (\textless €~5,000)
+                                \item low (\textless~€~5,000)
                                 \item low average (€~5,000–10,000)
                                 \item middle average (€~10,000–50,000)
-                                \item high (\textgreater €~50,000)
+                                \item high (\textgreater~€~50,000)
                         \end{itemize}
                 \item This allows us to analyze model performance for distinct
                         price segments and understand price ranges better.
         \end{itemize}
 \end{frame}
-
 
 \begin{frame}{Data Preparation for Classification}
         \begin{itemize}
@@ -650,15 +665,16 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
         \end{itemize}
 \end{frame}
 
-
 \begin{frame}{Classification Models and Evaluation}
     \begin{itemize}
         \item Evaluated several classifiers with 10-fold cross-validation:
         \begin{itemize}
-            \item RandomForest, XGBoost, CatBoost, DecisionTree, AdaBoost, KNeighbors, Logistic Regression, GaussianNB
+            \item RandomForest, XGBoost, CatBoost, DecisionTree, AdaBoost,
+                    KNeighbors, Logistic Regression, GaussianNB
         \end{itemize}
         \item Used weighted F1-score as the main metric due to class imbalance.
-        \item Hyperparameter tuning performed for the best pipelines (RandomForest, XGBoost) with GridSearchCV.
+        \item Hyperparameter tuning performed for the best pipelines
+                (RandomForest, XGBoost) with GridSearchCV.
         \item \textbf{Best performing algorithms:}
         \begin{itemize}
             \item RandomForest: F1-score = \textbf{0.873}
@@ -671,7 +687,6 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
         \end{itemize}
     \end{itemize}
 \end{frame}
-
 
 \begin{frame}{Best Dataset Versions}
         \begin{itemize}
@@ -708,19 +723,33 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
         \end{itemize}
 \end{frame}
 
-
 \begin{frame}{Hyperparameter Tuning}
     \begin{itemize}
-        \item After identifying the best-performing classification algorithms and dataset version, we applied \textbf{GridSearchCV} to tune hyperparameters and evaluated model performance using the weighted F1-score.
+        \item After identifying the best-performing classification algorithms
+                and dataset version, we applied \textbf{GridSearchCV} to tune
+                hyperparameters and evaluated model performance using the
+                weighted F1-score.
+        \item However for values \texttt{cv}~\textgreater~2 the OS killed our
+                process for using too much memory (\texttt{google collab} also
+                killed our process for taking way too long both for CPU and
+                GPU).
         \item \textbf{Final results:}
         \begin{itemize}
-            \item The best overall model was \textbf{XGBoostClassifier} on dataset V8, which achieved a weighted F1-score of \textbf{0.875} on the test set and \textbf{0.928} on the training set.
-            \item The best version of \textbf{RandomForestClassifier} on dataset V8 achieved a weighted F1-score of \textbf{0.874} on the test set and \textbf{0.976} on the training set.
+            \item The best overall model was \textbf{XGBoostClassifier} on
+                    dataset V8, which achieved a weighted F1-score of
+                    \textbf{0.875} on the test set and \textbf{0.928} on the
+                    training set.
+            \item The best version of \textbf{RandomForestClassifier} on
+                    dataset V8 achieved a weighted F1-score of \textbf{0.874}
+                    on the test set and \textbf{0.976} on the training set.
+            \item XGBoost showed strong generalization with no significant
+                overfitting. However RandomForest seems to have been
+                overtrained.
+            \item XGBoost slightly outperformed RandomForest in the final
+                evaluation.
         \end{itemize}
     \end{itemize}
 \end{frame}
-
-
 
 \begin{frame}{Key Takeaways: Classification Task}
         \begin{itemize}
@@ -743,4 +772,3 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
 \end{frame}
 
 \end{document}
-
