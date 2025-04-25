@@ -366,42 +366,160 @@ rows had 'yearOfRegistration' values less than 1920 or greater than 2016
             with the target variable or each other.
 \end{itemize}
 
-\section{Milestones}
-Break down the key stages or checkpoints in your project timeline. For example:
+\subsubsection{Dataset Split}
+Before splitting our dataset, first we replace all erroneous values with
+\texttt{NaN}, in order to later treat them as missing values, and fill them in
+via an imputer. We also combine the values 'lpg' and 'cng' into an
+\texttt{other} category as mentioned before. We also create two new features
+that we believe will help our model:
+\begin{enumerate}
+        \item \texttt{adLifespan}: we subtract the columns 'lastSeen' and
+                'dateCrawled' and we now have how long it took for the car to
+                be sold. It's likely that its higher priced counterparts tend
+                to remain listed longer than cheaper listings which quickly
+                disappear after being seen often enough by members in related
+                markets searching those platforms for new vehicles up for sale
+                at any given time within certain parameters established such as
+                location or age amongst others. This is counted in days.
+        \item \texttt{carAge}: we subtract the columns 'dateCreated' and
+                'yearOfRegistration' (we also add the 'monthOfRegistration'),
+                we count this in days so it's in the same scale as
+                'adLifespan'.
+    \item Parameters or configurations
+\end{enumerate}
+
+We now split our dataset 80/20 for train/test respectively. Rows with
+'fuelType' values 'hybrid' or 'elektro' are artificially increased
+(oversampling) in order to better learn these instances. It's important to do 
+this after data splitting, as to avoid data leakage.
+
+We currently have the following panda frames: \texttt{X\_train, X\_test} and
+\texttt{y\_train, y\_test}. And we start creating various versions of
+\texttt{X\_train}, in which each version is using different techniques. We use 
+the following imputers:
 \begin{itemize}
-    \item Literature review
-    \item Prototype implementation
-    \item Testing and iteration
-    \item Final deployment
+        \item SimpleImputer with 'mean' strategy for numerical features
+        \item IterativeImputer for numerical features
+        \item SimpleImputer with 'most\_frequent' strategy for categorical
+                features
+        \item SimpleImputer with 'constant' strategy for categorical
+                features
 \end{itemize}
+We use the following encoders:
+\begin{itemize}
+        \item LabelEncoder
+        \item OneHotEncoding for numerical features
+\end{itemize}
+
+We use the following scalers:
+\begin{itemize}
+        \item Normilizer with 'l2' norm for each row
+        \item MinMaxScaler
+        \item RobustScaler
+\end{itemize}
+
+We also use, SFS (Sequential Forward Selection), unskewing (both on X and y).
+Keep in mind, this is not an exhaustive list of all ideas and concepts that
+were tried.
+
 
 \section{Experimental Setup}
-Describe the experimental environment:
-\begin{itemize}
-    \item Hardware and software used
-    \item Datasets or simulations
-    \item Parameters or configurations
-\end{itemize}
+We tested each dataset version we created with a variety of regression
+algorithms such as 'RandomForest', 'AdaBoost', 'XGBoost', 'CatBoost' and others
+with their default parameters without altering their hyper parameters to save
+time (the algorithm 'SVR' was excluded due to impractically long training
+times). We ran each algorithm both with and without unskewing the target
+variable.
+
+After finding the two algorithms that performed best along with the
+corresponding dataset version, we used GridSearchCV pipeline in order to find
+the best version of those algorithms. Performance was evaluated using the
+\texttt{R2} score.
+
+We performed the same process again but for a classification problem, where now
+the target variable was not \texttt{price} but \texttt{price-range} where the
+following groups exist 'low', 'low average', 'middle average' and 'high'. The
+only major difference is that we were also able to use the LDA (Linear
+Discriminant Analysis) dimensionality reduction algorithm. Here we evaluated
+performance using the \texttt{f1\_score\_weighted}.
 
 \section{Results and Evaluation}
-Present your findings:
+For regression, we found that the algorithms that performed best without
+tweaking them were:
 \begin{itemize}
-    \item Quantitative results in tables/graphs
-    \item Qualitative insights
-    \item Comparison with baseline or existing methods
+    \item CatBoost with the original target with score '0.856'.
+    \item RandomForest with the unskewed target with score '0.853'.
 \end{itemize}
+Also, the best dataset Versions where:
+\begin{itemize}
+    \item V7 with target unskewed with score '0.777'.
+    \item V8 with target unskewed with score '0.776'.
+\end{itemize}
+From the pipeline, we found that 'CatBoost' with dataset V8 performed the best
+with an 'R2' score of '0.853' on the test dataset.
 
-\begin{figure}[!ht]
-    \centering
-    % \includegraphics[width=0.9\linewidth]{example_figure.png}
-    % \caption{Example caption for a figure}
-    % \label{fig:example}
-\end{figure}
+For classification, we found that the algorithms that performed best without
+tweaking them were:
+\begin{itemize}
+    \item RandomForest with score '0.873'.
+    \item XGBoost with score '0.864'.
+\end{itemize}
+Also, the best dataset Versions where:
+\begin{itemize}
+    \item V10 '0.817'.
+    \item V8 with score '0.811'.
+\end{itemize}
+From the pipeline, we found that 'XGBoost' with dataset V8 performed the best
+with an 'f1\_score\_weighted' score of '0.875' on the test dataset.
 
-\section{Discussion}
-Interpret your results. What do they mean? Any surprising findings?
+\vspace{1em}
+Extra information:
 
-\section{Conclusion and Future Work}
-Summarize your project outcomes and propose what could be improved or continued in future research.
+\textbf{Version V7}: This version includes the following
+        preprocessing steps:
+        \begin{itemize}
+                \item Feature selection using a k-best subset from the original
+                        training and test datasets decided by SFS.
+                \item Numerical features were imputed using the \texttt{mean}
+                        strategy.
+                \item Categorical features were imputed using the \texttt{most
+                        frequent} strategy.
+                \item Categorical features were encoded using \texttt{Ordinal
+                        Encoding}, with unknown categories handled by assigning
+                        a special value.
+                \item All numerical features were scaled using the
+                        \texttt{RobustScaler} to mitigate the impact of
+                        outliers.
+        \end{itemize}
+
+\textbf{Version V8}: Built upon V7 with additional preprocessing:
+        \begin{itemize}
+                \item Applied \texttt{PowerTransformer} (Yeo-Johnson method) to
+                        unskew numerical features: \texttt{kilometer},
+                        \texttt{carAge}, \texttt{powerPS}, and
+                        \texttt{adLifespan}.
+        \end{itemize}
+
+\textbf{Version V10}: An alternate preprocessing pipeline starting
+        from the same selected features:
+        \begin{itemize}
+                \item Numerical features were imputed using the \texttt{mean}
+                        strategy.
+                \item Categorical features were imputed using the \texttt{most
+                        frequent} strategy.
+                \item Categorical features were encoded using \texttt{One-Hot
+                        Encoding}, with unknown categories handled robustly.
+                \item All numerical features were scaled using the
+                        \texttt{RobustScaler}.
+                \item Applied \texttt{Linear Discriminant Analysis (LDA)} on
+                        the one-hot encoded categorical features, reducing them
+                        to 3 components.
+                \item Final dataset consists of scaled numerical features and
+                        the LDA components.
+                \item \texttt{PowerTransformer} (Yeo-Johnson) applied to the
+                        same set of unskewed features: \texttt{kilometer},
+                        \texttt{carAge}, \texttt{powerPS}, and
+                        \texttt{adLifespan}.
+        \end{itemize}
 
 \end{document}
