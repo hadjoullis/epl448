@@ -203,9 +203,7 @@ Price boxplot
                         Cayenne).
                 \item \textbf{General observations:}
                         \begin{itemize}
-                                \item Many categorical features are unbalanced;
-                                        stratified sampling may be needed for
-                                        fair modeling.
+                                \item Many categorical features are unbalanced.
                                 \item Outliers are present in every category.
                                 \item Grouping or discarding rare categories
                                         considered to improve model stability.
@@ -501,7 +499,7 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                         \end{itemize}
                 \item \textbf{Extra Trees Classifier:}
                         \begin{itemize}
-                                \item Attempted to compute feature importances.
+                                \item Attempted to compute feature importance.
                                 \item Kernel repeatedly crashed with larger
                                         \texttt{n\_estimators}, so results are
                                         unstable and not reliable for ranking.
@@ -716,15 +714,15 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                         \end{itemize}
                 \item \textbf{Version V10:}
                         \begin{itemize}
-                                \item Built on V9, which used the same feature
-                                        selection, imputation, and robust
-                                        scaling.
+                                \item Used features selected from \texttt{SFS}.
+                                \item Numerical features were imputed using the
+                                        \texttt{mean} strategy.
+                                \item Numerical features were scaled using 
+                                        \texttt{RobustScaler}.
                                 \item Applied one-hot encoding to categorical
-                                        features, followed by LDA for
+                                        features, followed by \texttt{LDA} for
                                         dimensionality reduction.
-                                \item Combined numerical features with LDA
-                                        components.
-                                \item Also applied Yeo-Johnson power
+                                \item Also applied \texttt{Yeo-Johnson} power
                                         transformation to unskew key numerical
                                         features.
                         \end{itemize}
