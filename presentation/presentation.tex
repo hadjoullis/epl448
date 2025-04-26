@@ -33,7 +33,7 @@
                         buyers.
                 \item \textbf{Dataset:} Our dataset initially contained 371,528
                         rows and 21 columns, sourced from \href{https://www.kaggle.com/datasets/thedevastator/uncovering-factors-that-affect-used-car-prices/data}{Kaggle}.
-                \item \textbf{Problem:} Accurately predict the selling price of
+                \item \textbf{Regression Problem:} Accurately predict the selling price of
                         a used car based on its features (brand, model, year,
                         gearbox, etc.).
                 \item \textbf{Objectives:}
@@ -521,6 +521,10 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
         \end{itemize}
 \end{frame}
 
+\begin{frame}{Feature Selection}
+        \includegraphics[width=\linewidth]{sfs.pdf}
+\end{frame}
+
 \begin{frame}{Dataset Versions and Preprocessing Strategies}
         \begin{itemize}
                 \item Created multiple dataset versions (V1–V8) to explore the
@@ -596,9 +600,9 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                 version, we applied \textbf{GridSearchCV} to tune
                 hyperparameters and evaluate model performance using the $R^2$
                 score.
-        \item However for values \texttt{cv}~\textgreater~2 the OS killed our
+        \item However, for values \texttt{cv}~\textgreater~2 the OS killed our
                 process for using too much memory (\texttt{google collab} also
-                killed our process for taking way too long both for CPU and
+                killed our process for taking way too long, both for CPU and
                 GPU).
         \item \textbf{Final results:}
         \begin{itemize}
@@ -612,7 +616,7 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                     training set.
         \end{itemize}
         \item CatBoost showed strong generalization with no significant
-                overfitting. However RandomForest seems to have been
+                overfitting. However, RandomForest seems to have been
                 overtrained.
         \item CatBoost slightly outperformed RandomForest in the final
                 evaluation.
@@ -641,6 +645,10 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                 \item This allows us to analyze model performance for distinct
                         price segments and understand price ranges better.
         \end{itemize}
+\end{frame}
+
+\begin{frame}{Data Preparation for Classification}
+        \includegraphics[width=\linewidth]{bins.pdf}
 \end{frame}
 
 \begin{frame}{Data Preparation for Classification}
@@ -729,7 +737,7 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                 and dataset version, we applied \textbf{GridSearchCV} to tune
                 hyperparameters and evaluated model performance using the
                 weighted F1-score.
-        \item However for values \texttt{cv}~\textgreater~2 the OS killed our
+        \item However, for values \texttt{cv}~\textgreater~2 the OS killed our
                 process for using too much memory (\texttt{google collab} also
                 killed our process for taking way too long both for CPU and
                 GPU).
@@ -743,7 +751,7 @@ VW\_Golf\_4\_5\_tuerig\_zu\_verkaufen\_mit\_Anhaengerkupplung & golf & volkswage
                     dataset V8 achieved a weighted F1-score of \textbf{0.874}
                     on the test set and \textbf{0.976} on the training set.
             \item XGBoost showed strong generalization with no significant
-                overfitting. However RandomForest seems to have been
+                overfitting. However, RandomForest seems to have been
                 overtrained.
             \item XGBoost slightly outperformed RandomForest in the final
                 evaluation.
